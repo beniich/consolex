@@ -181,3 +181,28 @@ model BatchTrace {
 
   @@map("batch_traces")
 }
+
+model InfrastructureNode {
+  id              String  @id @default(cuid())
+  nodeId          String  @unique // e.g. "Node-A1"
+  name            String
+  type            String
+  status          String
+  percentage      Int
+  percentageLabel String
+  progress        Int
+  progressLabel   String
+  active          Boolean @default(true)
+  icon            String
+
+  @@map("infrastructure_nodes")
+}
+
+model SystemLog {
+  id        String   @id @default(cuid())
+  level     String   // "info", "warn", "error", "success"
+  message   String
+  timestamp DateTime @default(now())
+
+  @@map("system_logs")
+}

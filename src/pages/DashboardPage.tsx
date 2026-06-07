@@ -23,6 +23,14 @@ export default function DashboardPage() {
     return <FreeDashboard />;
   }
 
+  const fetchNodes = useStore((s) => s.fetchNodes);
+  const fetchLogs = useStore((s) => s.fetchLogs);
+
+  useEffect(() => {
+    fetchNodes();
+    fetchLogs();
+  }, [fetchNodes, fetchLogs]);
+
 
   const [isProcessingNodeId, setIsProcessingNodeId] = useState<string | null>(null);
   const [isDdosActive, setIsDdosActive] = useState(true);

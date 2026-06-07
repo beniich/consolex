@@ -45,4 +45,9 @@ try {
   router.use('/nodes', nodeRoutes);
 } catch {}
 
+try {
+  const logRoutes = require('./logRoutes').default;
+  router.use('/logs', logRoutes);
+} catch {}
+
 export default router;

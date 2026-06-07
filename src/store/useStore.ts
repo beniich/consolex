@@ -15,6 +15,8 @@ interface AppStore {
   clearLogs: () => void;
   nodes: AuditNode[]
   setNodes: (nodes: AuditNode[]) => void;
+  fetchNodes: () => Promise<void>;
+  fetchLogs: () => Promise<void>;
   updateNode: (id: string, patch: Partial<AuditNode>) => void;
   // Toast notifications
   toasts: ToastNotif[];
@@ -113,21 +115,58 @@ const initialLogs: TerminalLog[] = [
 ];
 
 export const useStore = create<AppStore>((set) => ({
-  logs: initialLogs,
-  addLog: (level, message) =>
+  logs: [],
+  fetchLogs: async () => {
+    try {
+      const res = await fetch('http://localhost:4000/api/logs');
+      if (res.ok) {
+        const data = await res.json();
+        set({ logs: data.map((d: any) => ({ ...d, timestamp: new Date(d.timestamp).toLocaleTimeString('en-US') })) });
+      }
+    } catch (e) {
+      console.error('Failed to fetch logs', e);
+      set({ logs: initialLogs }); // Fallback to initial mock if backend is down
+    }
+  },
+  addLog: async (level, message) => {
+    // Optimistic UI update
+    const newLog = {
+      id: `log-${Date.now()}-${Math.random()}`,
+      timestamp: new Date().toLocaleTimeString('en-US'),
+      level,
+      message,
+    };
     set((s) => ({
       logs: [
-        ...s.logs.slice(-99), // keep last 100 logs max
-        {
-          id: `log-${Date.now()}-${Math.random()}`,
-          timestamp: new Date().toLocaleTimeString('fr-FR'),
-          level,
-          message,
-        },
+        ...s.logs.slice(-99),
+        newLog,
       ],
-    })),
+    }));
+
+    try {
+      await fetch('http://localhost:4000/api/logs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ level, message }),
+      });
+    } catch (e) {
+      console.error('Failed to save log to database', e);
+    }
+  },
   clearLogs: () => set({ logs: [] }),
-  nodes: initialNodes,
+  nodes: [],
+  fetchNodes: async () => {
+    try {
+      const res = await fetch('http://localhost:4000/api/nodes');
+      if (res.ok) {
+        const data = await res.json();
+        set({ nodes: data.map((n: any) => ({ ...n, id: n.nodeId })) }); // Map Prisma model to AuditNode interface
+      }
+    } catch (e) {
+      console.error('Failed to fetch nodes', e);
+      set({ nodes: initialNodes });
+    }
+  },
   setNodes: (nodes) => set({ nodes }),
   updateNode: (id, patch) =>
     set((s) => ({
