@@ -1,0 +1,22 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env
+.env.local
+.env.production
+.env.development
+!.env.example
+
+# Server
+server/node_modules/
+server/dist/
+server/.env
+server/.env.local
+
+# OS
+Thumbs.db
+*.swp
+*.swo
