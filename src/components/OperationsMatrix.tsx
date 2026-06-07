@@ -198,7 +198,7 @@ export default function OperationsMatrix({ onAddLog, mainLogs }: OperationsMatri
         <button 
           onClick={() => {
             setActiveSubTab('it');
-            onAddLog('info', 'NAVIGATOR: Chargement de Operational Infrastructure Control (it)...');
+            onAddLog('info', 'NAVIGATOR: Loading Operational Infrastructure Control (it)...');
           }} 
           className={`tab-btn px-4 py-2 text-xs font-mono uppercase tracking-tighter transition-all cursor-pointer border ${
             activeSubTab === 'it' 
@@ -240,7 +240,7 @@ export default function OperationsMatrix({ onAddLog, mainLogs }: OperationsMatri
         <button 
           onClick={() => {
             setActiveSubTab('inv');
-            onAddLog('info', 'NAVIGATOR: Chargement de Supply Chain Capacitance Matrix (inv)...');
+            onAddLog('info', 'NAVIGATOR: Loading Supply Chain Capacitance Matrix (inv)...');
           }} 
           className={`tab-btn px-4 py-2 text-xs font-mono uppercase tracking-tighter transition-all cursor-pointer border ${
             activeSubTab === 'inv' 
@@ -975,7 +975,7 @@ export default function OperationsMatrix({ onAddLog, mainLogs }: OperationsMatri
                 className="w-full bg-[#ef4444] hover:bg-white text-white hover:text-black border border-red-500 text-[10px] font-mono font-bold py-2 uppercase tracking-wider cursor-pointer transition select-none disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${isReordering ? 'animate-spin' : ''}`} />
-                <span>{isReordering ? 'CHARGEMENT DES CAPACITEURS...' : 'Trigger Reorder Protocol'}</span>
+                <span>{isReordering ? 'LOADING CAPACITORS...' : 'Trigger Reorder Protocol'}</span>
               </button>
             </div>
           </div>

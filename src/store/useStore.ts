@@ -96,19 +96,19 @@ const initialLogs: TerminalLog[] = [
     id: 'log-2',
     timestamp: new Date(Date.now() - 2800).toLocaleTimeString(),
     level: 'success',
-    message: 'Signature SOC 2 vérifiée active. Modules de transport chiffrés.',
+    message: 'SOC 2 signature verified active. Encrypted transport modules.',
   },
   {
     id: 'log-3',
     timestamp: new Date(Date.now() - 1200).toLocaleTimeString(),
     level: 'warn',
-    message: 'Node-B2 PostgreSQL signale des dérives mineures de synchronisation.',
+    message: 'Node-B2 PostgreSQL reports minor synchronization drifts.',
   },
   {
     id: 'log-4',
     timestamp: new Date().toLocaleTimeString(),
     level: 'error',
-    message: "Node-C3 [API Gateway] : Pic d'attaques par déni de service externe identifié (DDoS).",
+    message: "Node-C3 [API Gateway]: External denial of service attack spike identified (DDoS).",
   },
 ];
 
@@ -166,7 +166,7 @@ export const useStore = create<AppStore>((set) => ({
   // ─── SaaS: Current User ───────────────────────────────────────────────────────
   currentUser: {
     id: 'usr-001',
-    name: 'Admin AgroMaître',
+    name: 'AgroMaître Admin',
     email: 'admin@agromatre.io',
     role: 'owner' as const,
     plan: 'pro' as const,
@@ -175,7 +175,7 @@ export const useStore = create<AppStore>((set) => ({
     set((s) => ({ currentUser: { ...s.currentUser, ...u } })),
   // ─── SaaS: Team ───────────────────────────────────────────────────────────────
   teamMembers: [
-    { id: 'tm-1', name: 'Admin AgroMaître', email: 'admin@agromatre.io', role: 'owner', joinedAt: '2024-01-15', status: 'active' },
+    { id: 'tm-1', name: 'AgroMaître Admin', email: 'admin@agromatre.io', role: 'owner', joinedAt: '2024-01-15', status: 'active' },
     { id: 'tm-2', name: 'Fatima Benali', email: 'f.benali@agromatre.io', role: 'manager', joinedAt: '2024-03-01', status: 'active' },
     { id: 'tm-3', name: 'Youssef Karam', email: 'y.karam@agromatre.io', role: 'viewer', joinedAt: '2024-05-20', status: 'invited' },
   ],

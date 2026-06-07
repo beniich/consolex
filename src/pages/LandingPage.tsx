@@ -229,7 +229,7 @@ export default function LandingPage() {
 
   const features = [
     { icon: MapPin,     color: '#c25a3d', title: 'Localisation en Temps Réel',  desc: 'Suivez chaque animal sur votre exploitation avec une précision GPS. Détectez les sorties de zone et les comportements anormaux instantanément.', delay: 0 },
-    { icon: Activity,   color: '#16a34a', title: 'Santé & Diagnostics IA',       desc: "Notre moteur d'intelligence artificielle analyse les indicateurs vitaux et vous alerte avant qu'une maladie ne se propage dans votre troupeau.", delay: 0.1 },
+    { icon: Activity,   color: '#16a34a', title: 'AI Health & Diagnostics',       desc: "Our artificial intelligence engine analyzes vital indicators and alerts you before a disease spreads in your herd.", delay: 0.1 },
     { icon: Shield,     color: '#2563eb', title: 'Traçabilité Blockchain',        desc: 'Chaque lot, chaque traitement, chaque transfert est ancré dans un registre immuable. Conformité totale aux normes européennes.', delay: 0.2 },
     { icon: TrendingUp, color: '#d97706', title: 'Finance & ROI Engine',          desc: 'Calculez la rentabilité réelle par animal, par zone, par saison. Des décisions basées sur des données, pas sur des intuitions.', delay: 0.3 },
     { icon: Brain,      color: '#7c3aed', title: 'Agro‑Brain (RAG AI)',           desc: "Posez vos questions en langage naturel. L'assistant contextuel connaît vos données et génère des recommandations actionnables.", delay: 0.4 },
@@ -237,7 +237,7 @@ export default function LandingPage() {
   ];
 
   const testimonials = [
-    { name: 'Mohammed A.', role: 'Éleveur bovin, Maroc',       stars: 5, text: "AgroMaître a réduit notre mortalité animale de 40% en six mois. L'alerte précoce de maladies est révolutionnaire." },
+    { name: 'Mohammed A.', role: 'Cattle breeder, Morocco',       stars: 5, text: "AgroMaître reduced our animal mortality by 40% in six months. Early disease alert is revolutionary." },
     { name: 'Fatima B.',   role: 'Directrice, Ferme Bio Rabat', stars: 5, text: "La traçabilité blockchain nous a permis d'accéder aux marchés européens. Notre chiffre d'affaires a doublé en un an." },
     { name: 'Youssef K.',  role: 'Agronome, Souss‑Massa',      stars: 5, text: "L'IA de diagnostic visuel détecte les maladies foliaires bien avant que l'œil humain ne les perçoive. Incroyable précision." },
   ];
@@ -414,7 +414,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { step: '01', icon: Cpu,       title: 'Connectez vos capteurs',   desc: 'Branchez vos capteurs IoT, balises GPS et équipements. Notre plateforme détecte tout automatiquement.' },
-              { step: '02', icon: Brain,     title: 'L\'IA apprend vos données', desc: "En 48h, l'algorithme établit les baselines de votre exploitation et commence à générer des alertes personnalisées." },
+              { step: '02', icon: Brain,     title: 'L\'IA apprend vos données', desc: "In 48h, the algorithm establishes the baselines of your operation and starts generating personalized alerts." },
               { step: '03', icon: TrendingUp, title: 'Pilotez & optimisez',      desc: 'Accédez à votre Command Center depuis n\'importe quel appareil. Prenez les bonnes décisions, au bon moment.' },
             ].map((s, i) => (
               <motion.div key={s.step} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}

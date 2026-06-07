@@ -63,7 +63,7 @@ export default function UpgradePage() {
       popular: true,
       features: [
         'Accès à tous les modules standards',
-        'Tableau de bord de sécurité complet',
+        'Complete Security Dashboard',
         'Capteurs & Télémétrie en temps réel',
         'Assistant IA Agro-Brain & Vision IA',
         '5 000 tokens IA par mois',
@@ -106,7 +106,7 @@ export default function UpgradePage() {
           className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm font-semibold mb-6 group"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          Retour au tableau de bord
+          Back to Dashboard
         </button>
         
         <div className="text-center max-w-2xl mx-auto">
@@ -191,7 +191,7 @@ export default function UpgradePage() {
 
       {/* Guarantee Banner */}
       <div className="max-w-2xl mx-auto text-center mt-16 text-slate-500 text-xs">
-        <p>Paiement sécurisé crypté SSL. Annulez ou changez de forfait à tout moment depuis votre tableau de bord.</p>
+        <p>SSL encrypted secure payment. Cancel or change plan anytime from your dashboard.</p>
         <p className="mt-1">Besoin d'un devis sur-mesure pour une coopérative agricole ? <span className="text-amber-400 cursor-pointer hover:underline">Contactez notre équipe</span></p>
       </div>
     </div>

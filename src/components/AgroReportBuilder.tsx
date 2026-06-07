@@ -253,7 +253,7 @@ export default function AgroReportBuilder({ onAddLog }: { onAddLog: (level: 'inf
     
     setTimeout(() => {
       setIsGenerating(false);
-      onAddLog('success', `REPORTS: Rapport "${reportTitle}" généré avec succès ! PDF prêt au téléchargement.`);
+      onAddLog('success', `REPORTS: Report "${reportTitle}" successfully generated! PDF ready for download.`);
     }, 2000);
   };
 

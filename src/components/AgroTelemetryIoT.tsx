@@ -113,7 +113,7 @@ export default function AgroTelemetryIoT({ onAddLog }: AgroTelemetryIoTProps) {
   };
 
   const handleApplyThresholds = () => {
-    onAddLog('success', `THRESHOLDS: Limites de sécurité calées : Humidité >= ${humidityMinThreshold}%, Température <= ${tempMaxThreshold}°C, Nutriments >= ${nutrientMinThreshold} PPM.`);
+    onAddLog('success', `THRESHOLDS: Security limits calibrated: Humidity >= ${humidityMinThreshold}%, Temperature <= ${tempMaxThreshold}°C, Nutrients >= ${nutrientMinThreshold} PPM.`);
   };
 
   // Filtration logic representing actual values

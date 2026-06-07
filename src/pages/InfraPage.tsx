@@ -26,14 +26,14 @@ export default function InfraPage() {
         <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
-              RÉSEAU TOPOLOGIQUE DES MONITEURS CC_ARCH
+              CC_ARCH MONITORS TOPOLOGICAL NETWORK
             </h2>
             <p className="text-xs text-[#c5c6cd] mt-0.5">
-              Vue microscopique des hôtes et performances de serveurs locaux à double sens.
+              Microscopic view of hosts and two-way local server performance.
             </p>
           </div>
           <span className="text-[10px] font-mono px-2 py-1 bg-[#0a192f] border border-slate-700 text-teal-400">
-            AES-256-GCM SÉCURISÉ
+            AES-256-GCM SECURE
           </span>
         </div>
 
@@ -43,11 +43,11 @@ export default function InfraPage() {
               <tr className="border-b border-[#334155] text-slate-400 font-mono text-[10px] uppercase">
                 <th className="pb-3 pr-2">Nœud d'infrastructure</th>
                 <th className="pb-3 px-2">Espace IP</th>
-                <th className="pb-3 px-2">Ports Autorisés</th>
-                <th className="pb-3 px-2">Système d'exploitation</th>
+                <th className="pb-3 px-2">Authorized Ports</th>
+                <th className="pb-3 px-2">Operating System</th>
                 <th className="pb-3 px-2">Charge CPU</th>
                 <th className="pb-3 px-2">Uptime Actuel</th>
-                <th className="pb-3 px-2 text-right">Contrôle Réseau</th>
+                <th className="pb-3 px-2 text-right">Network Control</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#334155]/60">
@@ -95,7 +95,7 @@ export default function InfraPage() {
                         onClick={() => handleNodeAction(node.id)}
                         className={`text-[10px] font-mono font-bold border border-slate-700 hover:border-[#38BDF8] hover:text-white px-2 py-1 rounded-sm uppercase tracking-wide cursor-pointer text-slate-400`}
                       >
-                        {node.status === 'locked' ? 'Débloquer' : 'Actionner'}
+                        {node.status === 'locked' ? 'Unlock' : 'Actuate'}
                       </button>
                     </td>
                   </tr>
@@ -135,7 +135,7 @@ export default function InfraPage() {
             <Globe className="w-6 h-6 text-emerald-400" />
           </div>
           <div>
-            <span className="text-[10px] font-mono text-[#8f9097] uppercase">RELAIS ZONE DE SÉCURITÉ</span>
+            <span className="text-[10px] font-mono text-[#8f9097] uppercase">SECURITY ZONE RELAY</span>
             <h4 className="text-lg font-mono font-bold text-white mt-1">EU-WEST (LONDRES)</h4>
             <p className="text-xs text-[#4de082] font-mono mt-0.5">Transit via SSL Proxy (Active)</p>
           </div>

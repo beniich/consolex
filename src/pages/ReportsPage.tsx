@@ -100,7 +100,7 @@ export default function ReportsPage() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <p className="text-xs font-bold text-slate-300">Déclencher un rapport test immédiat</p>
-                  <p className="text-[10px] text-slate-500">Génère et envoie la version actuelle du tableau de bord de conformité.</p>
+                  <p className="text-[10px] text-slate-500">Generates and sends the current version of the compliance dashboard.</p>
                 </div>
                 
                 <motion.button

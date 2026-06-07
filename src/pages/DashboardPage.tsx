@@ -35,26 +35,26 @@ export default function DashboardPage() {
   const handleNodeAction = useCallback(
     (nodeId: string) => {
       setIsProcessingNodeId(nodeId);
-      addLog('info', `Démarrage de la commande manuelle sur le module ${nodeId}...`);
+      addLog('info', `Starting manual command on module ${nodeId}...`);
 
       setTimeout(() => {
         setNodes(
           useStore.getState().nodes.map((n) => {
             if (n.id === nodeId) {
               if (n.status === 'optimal') {
-                addLog('success', `Synchronisation terminée pour ${nodeId}. Les règles de pare-feu sont alignées.`);
+                addLog('success', `Synchronization completed for ${nodeId}. Firewall rules are aligned.`);
                 return { ...n, percentage: 100, progress: 100 };
               } else if (n.status === 'updating') {
-                addLog('success', `Base de données ${nodeId} mise à niveau avec succès vers la dernière version.`);
+                addLog('success', `Database ${nodeId} successfully upgraded to latest version.`);
                 return { ...n, status: 'optimal', percentage: 98, progress: 95, active: true };
               } else if (n.status === 'critical') {
-                addLog('success', `Alerte maîtrisée ! ${nodeId} isolé avec succès du réseau public.`);
+                addLog('success', `Alert contained! ${nodeId} successfully isolated from public network.`);
                 return { ...n, status: 'locked', percentage: 100, progress: 0 };
               } else if (n.status === 'locked') {
-                addLog('warn', `Déverrouillage de ${nodeId}. Rétablissement de l'accès général.`);
+                addLog('warn', `Unlocking ${nodeId}. General access restored.`);
                 return { ...n, status: 'critical', percentage: 71, progress: 70 };
               } else if (n.status === 'secure') {
-                addLog('success', `Contrôle de validation cryptographique concluant pour ${nodeId}. Certificat intact.`);
+                addLog('success', `Cryptographic validation successful for ${nodeId}. Certificate intact.`);
                 return { ...n, status: 'optimal', percentage: 100, progress: 100, active: true };
               }
             }
@@ -70,27 +70,27 @@ export default function DashboardPage() {
   const triggerDDoS = useCallback(() => {
     setIsDdosActive(true);
     setNodes(nodes.map((n) => (n.id === 'Node-C3' ? { ...n, status: 'critical', percentage: 41, progress: 95 } : n)));
-    notifyAttack('ATTENTION: Débordement de trafic DDoS injecté avec succès sur Node-C3 API Gateway ! Latence critique.');
+    notifyAttack('WARNING: DDoS traffic overflow successfully injected on Node-C3 API Gateway! Critical latency.');
   }, [nodes, setNodes, notifyAttack]);
 
   const triggerMalware = useCallback(() => {
     setIsMalwareActive(true);
     setNodes(nodes.map((n) => (n.id === 'Node-B2' ? { ...n, status: 'updating', percentage: 15, progress: 85 } : n)));
-    notifyAttack("ALERTE: Signature suspecte d'un script d'injection SQL repérée sur le nœud de base de données !");
+    notifyAttack("ALERT: Suspicious SQL injection script signature detected on database node!");
   }, [nodes, setNodes, notifyAttack]);
 
   const triggerPatch = useCallback(() => {
     setNodes(nodes.map((n) => (n.id === 'Node-B2' ? { ...n, status: 'optimal', percentage: 95, progress: 100, active: true } : n)));
     setIsMalwareActive(false);
-    addLog('success', 'Restauration: Correctif de sécurité appliqué sur le serveur de base de données. Vulnérabilités résolues !');
+    addLog('success', 'Restoration: Security patch applied to database server. Vulnerabilities resolved!');
   }, [nodes, setNodes, addLog]);
 
   const triggerScanState = useCallback(() => {
-    addLog('info', "Initialisation d'un balayage complet des nœuds pour certification SOC 2...");
+    addLog('info', "Initializing complete node scan for SOC 2 certification...");
     let delay = 300;
     nodes.forEach((n) => {
       setTimeout(() => {
-        addLog('success', `Vérification du module ${n.id} [${n.name}] -> OK`);
+        addLog('success', `Verifying module ${n.id} [${n.name}] -> OK`);
       }, delay);
       delay += 300;
     });
@@ -102,7 +102,7 @@ export default function DashboardPage() {
     setNodes(useStore.getState().nodes.map(() => null).filter(Boolean) as any[]);
     // Reset to store initial nodes
     useStore.setState({ nodes: initialNodes });
-    addLog('success', "RÉINITIALISATION: Toutes les configurations d'usine et les niveaux de risque ont été réinitialisés.");
+    addLog('success', "RESET: All factory configurations and risk levels have been reset.");
   }, [addLog, initialNodes]);
 
   const handleTerminalCommand = useCallback(
@@ -172,14 +172,14 @@ export default function DashboardPage() {
             <AlertTriangle className="w-6 h-6 text-red-400 mt-1 sm:mt-0 animate-pulse shrink-0" />
             <div>
               <h4 className="text-sm font-mono font-bold uppercase text-white tracking-wide">
-                ALERTE DE SÉCURITÉ CRITIQUE EXPÉDIÉE !
+                CRITICAL SECURITY ALERT DISPATCHED!
               </h4>
               <p className="text-xs text-slate-300 mt-0.5 font-mono">
                 {isDdosActive && isMalwareActive
-                  ? "DDoS volumétrique en cours sur API Gateway & Attaque d'injection SQL identifiée sur le serveur de base de données."
+                  ? "Volumetric DDoS in progress on API Gateway & SQL injection attack identified on database server."
                   : isDdosActive
-                  ? "Pic de latence anormal de 71% repéré sur API Gateway (Infiltration DDoS suspectée)."
-                  : 'Script malveillant repéré essayant de contourner le module relationnel PostgreSQL Node-B2.'}
+                  ? "Abnormal latency spike of 71% detected on API Gateway (Suspected DDoS infiltration)."
+                  : 'Malicious script detected attempting to bypass PostgreSQL Node-B2 relational module.'}
               </p>
             </div>
           </div>

@@ -113,7 +113,7 @@ export default function AgroWorkspaceSettings({ onAddLog }: AgroWorkspaceSetting
 
   const handleDeleteMember = (id: number, name: string, email: string) => {
     setTeamMembers(prev => prev.filter(m => m.id !== id));
-    onAddLog('warn', `WORKSPACE: Membre supprimé du système de sécurité: [${email}].`);
+    onAddLog('warn', `WORKSPACE: Member removed from security system: [${email}].`);
 
     // Add to audit trail
     const newAudit: ActivityLog = {

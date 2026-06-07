@@ -44,7 +44,7 @@ export default function TraceabilityPage() {
       const data = await apiGet<Block[]>('/traceability/batches');
       setBlocks(data || []);
     } catch (err: any) {
-      addLog('error', `Erreur de chargement de la blockchain: ${err.message}`);
+      addLog('error', `Blockchain loading error: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export default function TraceabilityPage() {
       if (report.isValid) {
         addLog('success', 'Blockchain intègre. Signature cryptographique validée.');
       } else {
-        addLog('error', `Alerte Blockchain: ${report.message}`);
+        addLog('error', `Blockchain Alert: ${report.message}`);
       }
     } catch (err: any) {
       addLog('error', `Erreur lors de la vérification blockchain: ${err.message}`);
@@ -145,7 +145,7 @@ export default function TraceabilityPage() {
             {verification.isValid ? <ShieldCheck size={20} className="shrink-0 mt-0.5" /> : <ShieldAlert size={20} className="shrink-0 mt-0.5" />}
             <div>
               <p className="text-xs font-bold uppercase font-mono">
-                Rapport d'Audit Blockchain : {verification.isValid ? 'VALIDE' : 'SÉCURITÉ INFECTÉE'}
+                Blockchain Audit Report : {verification.isValid ? 'VALID' : 'SECURITY INFECTED'}
               </p>
               <p className="text-xs mt-1 text-slate-300 font-mono">{verification.message}</p>
             </div>
@@ -159,7 +159,7 @@ export default function TraceabilityPage() {
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
             <div className="w-10 h-10 border-2 border-[#f97316]/20 border-t-[#f97316] rounded-full animate-spin" />
             <span className="text-xs font-mono text-[#f97316] tracking-widest uppercase animate-pulse">
-              Chargement du registre distribué...
+              Loading distributed ledger...
             </span>
           </div>
         ) : (

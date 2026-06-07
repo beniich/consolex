@@ -24,7 +24,7 @@ export default function FreeDashboard() {
   const metrics = [
     { label: 'Température', value: '24.5°C', icon: Thermometer, color: '#f97316', sub: 'Serre principale' },
     { label: 'Humidité sol', value: '68%', icon: Droplets, color: '#38bdf8', sub: 'Parcelle A' },
-    { label: 'Alertes actives', value: '2', icon: AlertTriangle, color: '#ef4444', sub: 'Capteurs critiques' },
+    { label: 'Active alerts', value: '2', icon: AlertTriangle, color: '#ef4444', sub: 'Critical sensors' },
     { label: 'Capteurs en ligne', value: '7/8', icon: Wifi, color: '#4de082', sub: '87% opérationnels' },
   ];
 

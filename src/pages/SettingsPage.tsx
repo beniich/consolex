@@ -38,7 +38,7 @@ export default function SettingsPage() {
             <button
               onClick={() => {
                 setSecurityStandard('soc2');
-                addLog('success', 'Régistre de sécurité modifié : SOC 2 TYPE II [ACTIVÉ]');
+                addLog('success', 'Security register modified: SOC 2 TYPE II [ACTIVATED]');
               }}
               className={`p-4 border font-mono rounded flex flex-col items-center justify-center gap-2 cursor-pointer transition ${
                 securityStandard === 'soc2'
@@ -53,7 +53,7 @@ export default function SettingsPage() {
             <button
               onClick={() => {
                 setSecurityStandard('pci');
-                addLog('success', 'Régistre de sécurité modifié : PCI-DSS v4.0 [ACTIVÉ]');
+                addLog('success', 'Security register modified: PCI-DSS v4.0 [ACTIVATED]');
               }}
               className={`p-4 border font-mono rounded flex flex-col items-center justify-center gap-2 cursor-pointer transition ${
                 securityStandard === 'pci'
@@ -68,7 +68,7 @@ export default function SettingsPage() {
             <button
               onClick={() => {
                 setSecurityStandard('iso');
-                addLog('success', 'Régistre de sécurité modifié : ISO 27001 [ACTIVÉ]');
+                addLog('success', 'Security register modified: ISO 27001 [ACTIVATED]');
               }}
               className={`p-4 border font-mono rounded flex flex-col items-center justify-center gap-2 cursor-pointer transition ${
                 securityStandard === 'iso'
@@ -140,7 +140,7 @@ export default function SettingsPage() {
               <CheckCircle className="w-4 h-4 text-[#4de082] shrink-0 mt-0.5" />
               <div>
                 <span className="text-white block font-bold">SYS-AES: TLS Actif v1.3</span>
-                <span className="text-gray-400 text-[10px]">Trafic HTTP forcé sur le protocole chiffré.</span>
+                <span className="text-gray-400 text-[10px]">HTTP traffic forced to encrypted protocol.</span>
               </div>
             </div>
 
@@ -148,14 +148,14 @@ export default function SettingsPage() {
               <CheckCircle className="w-4 h-4 text-[#4de082] shrink-0 mt-0.5" />
               <div>
                 <span className="text-white block font-bold">AUTH-MFA: Double Facteur</span>
-                <span className="text-gray-400 text-[10px]">Protection de l'accès kernel requis pour l'administrateur.</span>
+                <span className="text-gray-400 text-[10px]">Kernel access protection required for administrator.</span>
               </div>
             </div>
 
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-[#4de082] shrink-0 mt-0.5" />
               <div>
-                <span className="text-white block font-bold">SQL-ENC: Relationnel chiffré</span>
+                <span className="text-white block font-bold">SQL-ENC: Encrypted relational</span>
                 <span className="text-gray-400 text-[10px]">La base PostgreSQL Node-B2 applique le chiffrement crypt.</span>
               </div>
             </div>
@@ -164,7 +164,7 @@ export default function SettingsPage() {
               <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5 animate-pulse" />
               <div>
                 <span className="text-[#8f9097] block font-bold">NET-WAF: Pare-feu restrictif</span>
-                <span className="text-gray-400 text-[10px]">Vérification continue des connexions.</span>
+                <span className="text-gray-400 text-[10px]">Continuous connection verification.</span>
               </div>
             </div>
           </div>

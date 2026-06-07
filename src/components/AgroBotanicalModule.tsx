@@ -144,7 +144,7 @@ export default function AgroBotanicalModule({ onAddLog }: AgroBotanicalModulePro
 
   const handleCropSelect = (crop: CropSpecies) => {
     setSelectedCropId(crop.id);
-    onAddLog('success', `BOTANICAL: Espèce sélectionnée [${crop.name}] - Chargement des calibrages solénoïdes.`);
+    onAddLog('success', `BOTANICAL: Selected species [${crop.name}] - Loading solenoid calibrations.`);
   };
 
   const handleHarvestRequest = (cropName: string) => {

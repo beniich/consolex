@@ -30,7 +30,7 @@ function ToastItem({ toast }: { toast: ToastNotif }) {
       icon: <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />,
       bg: 'bg-red-950/95 border-red-500/60',
       text: 'text-red-300',
-      title: '🚨 ALERTE CRITIQUE',
+      title: '🚨 CRITICAL ALERT',
     },
     warn: {
       icon: <Zap className="w-4 h-4 shrink-0 mt-0.5" />,

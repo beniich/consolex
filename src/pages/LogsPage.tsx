@@ -27,10 +27,10 @@ export default function LogsPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div>
             <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
-              RÉGISTRE CENTRALISÉ DES ÉVÉNEMENTS & INCIDENTS
+              CENTRALIZED EVENT & INCIDENT LEDGER
             </h2>
             <p className="text-xs text-[#c5c6cd] mt-0.5">
-              Journal de conformité inaltérable retraçant toutes les actions materielles.
+              Unalterable compliance log tracing all material actions.
             </p>
           </div>
 
@@ -88,12 +88,12 @@ export default function LogsPage() {
             </button>
             <button
               onClick={() => {
-                addLog('info', 'Rejeu des audits de sécurité de conformité...');
+                addLog('info', 'Replaying compliance security audits...');
                 nodes.forEach((n) => addLog('success', `Nœud vérifié : ${n.name} (100% stable)`));
               }}
               className="bg-slate-900 border border-slate-700 hover:border-[#38BDF8] text-slate-300 hover:text-white px-3 py-1.5 rounded transition cursor-pointer"
             >
-              Regénérer logs factices
+              Regenerate dummy logs
             </button>
           </div>
 
