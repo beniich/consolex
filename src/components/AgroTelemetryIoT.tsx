@@ -18,15 +18,16 @@ import {
   Volume2,
   BellRing
 } from 'lucide-react';
+import { apiGet } from '../api/apiService';
 
 interface AgroTelemetryIoTProps {
   onAddLog: (level: 'info' | 'success' | 'warn' | 'error', message: string) => void;
 }
 
 interface SensorNode {
-  id: number;
+  id: string | number;
   name: string;
-  zone: 'Zone A' | 'Zone B' | 'Zone C' | 'Zone D' | 'Zone E' | 'Zone F';
+  zone: string;
   signal: number;
   battery: number;
   lastPing: string;
@@ -72,7 +73,36 @@ export default function AgroTelemetryIoT({ onAddLog }: AgroTelemetryIoTProps) {
     { id: 18, name: 'Nutrient Sensor F5', zone: 'Zone F', signal: -75, battery: 10, lastPing: '2s ago', active: false, type: 'Nutrient', currentVal: 0, points: [5, 4, 2, 1, 0, 0] },
   ]);
 
-  const toggleSensorActive = (id: number, name: string, current: boolean) => {
+  React.useEffect(() => {
+    let active = true;
+    apiGet<any>('/sensors')
+      .then(response => {
+        if (!active) return;
+        const data = Array.isArray(response) ? response : (response && Array.isArray(response.data) ? response.data : []);
+        if (data && data.length > 0) {
+          const mapped = data.map((dbSensor: any, idx: number) => {
+            const staticMatch = sensors.find(s => String(s.name).toLowerCase() === String(dbSensor.name).toLowerCase()) || sensors[idx % sensors.length];
+            return {
+              id: dbSensor.id,
+              name: dbSensor.name,
+              zone: dbSensor.zone?.name || staticMatch.zone || 'Zone A',
+              signal: staticMatch.signal || -75,
+              battery: staticMatch.battery || 88,
+              lastPing: dbSensor.isActive ? '2s ago' : 'Offline',
+              active: dbSensor.isActive,
+              type: (dbSensor.type === 'TEMPERATURE' ? 'Temp' : dbSensor.type === 'HUMIDITY' ? 'Weather' : dbSensor.type === 'SOIL' ? 'Moisture' : 'Nutrient') as any,
+              currentVal: staticMatch.currentVal || 20,
+              points: staticMatch.points || [10, 15, 12, 20, 15, 20]
+            };
+          });
+          setSensors(mapped);
+        }
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, []);
+
+  const toggleSensorActive = (id: string | number, name: string, current: boolean) => {
     setSensors(prev => prev.map(s => {
       if (s.id === id) {
         return { ...s, active: !current, lastPing: !current ? 'Just now' : 'Failed' };

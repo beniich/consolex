@@ -1,25 +1,48 @@
 import { Router } from 'express';
-import authRoutes from './authRoutes';
-import sensorRoutes from './sensorRoutes';
-import reportRoutes from './reportRoutes';
-import knowledgeRoutes from './knowledgeRoutes';
-import aiRoutes from './aiRoutes';
-import financeRoutes from './financeRoutes';
-import blockchainRoutes from './blockchainRoutes';
 
-/**
- * Central API router.
- * All sub-routers are mounted here and then attached to /api in index.ts.
- */
-const apiRouter = Router();
+const router = Router();
 
-// ── Sub-routes ────────────────────────────────────────────────────────────────
-apiRouter.use('/auth', authRoutes);
-apiRouter.use('/sensors', sensorRoutes);
-apiRouter.use('/reports', reportRoutes);
-apiRouter.use('/knowledge', knowledgeRoutes);
-apiRouter.use('/ai', aiRoutes);
-apiRouter.use('/finance', financeRoutes);
-apiRouter.use('/traceability', blockchainRoutes);
+// Lazy imports to handle missing dependencies gracefully
+const loadRoute = (factory: () => Promise<{ default: Router }>) => {
+  return async (req: any, res: any, next: any) => {
+    try {
+      const mod = await factory();
+      mod.default(req, res, next);
+    } catch (err) {
+      next(err);
+    }
+  };
+};
 
-export default apiRouter;
+// Public routes (no auth required)
+import pricingRoutes from './pricingRoutes';
+import aboutRoutes from './aboutRoutes';
+import cropRoutes from './cropRoutes';
+import pestRoutes from './pestRoutes';
+router.use('/pricing', pricingRoutes);
+router.use('/about', aboutRoutes);
+router.use('/crops', cropRoutes);
+router.use('/pests', pestRoutes);
+
+// Protected routes (auth required)
+try {
+  const authRoutes = require('./authRoutes').default;
+  router.use('/auth', authRoutes);
+} catch {}
+
+try {
+  const sensorRoutes = require('./sensorRoutes').default;
+  router.use('/sensors', sensorRoutes);
+} catch {}
+
+try {
+  const reportRoutes = require('./reportRoutes').default;
+  router.use('/reports', reportRoutes);
+} catch {}
+
+try {
+  const nodeRoutes = require('./nodeRoutes').default;
+  router.use('/nodes', nodeRoutes);
+} catch {}
+
+export default router;

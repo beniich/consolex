@@ -68,6 +68,34 @@ export default function AgroPestWarning({ onAddLog }: AgroPestWarningProps) {
     }
   ]);
 
+  React.useEffect(() => {
+    fetch('/api/pests')
+      .then(r => r.json())
+      .then((data: any[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped = data.map((dbPest, idx) => {
+            const staticMatch = [
+              { name: 'Late Blight', type: 'Fungal', pathogen: 'Phytophthora infestans', zone: 'Zone A (Southwest)', details: 'High spore concentration detected following morning dampness. Rapid foliar lesions observed.', agent: 'Trifloxystrobin bio-spray' },
+              { name: 'Aphids', type: 'Insect', pathogen: 'Myzus persicae', zone: 'Zone C (West Ridge)', details: 'Visual drone scanners identify high insect aggregation. Potential virus vectors active.', agent: 'Coccinella septempunctata predators' }
+            ].find(a => a.name.toLowerCase() === dbPest.pestName.toLowerCase());
+            return {
+              id: dbPest.id || `pest-${idx}`,
+              name: dbPest.pestName,
+              type: (staticMatch?.type || 'Insect') as any,
+              pathogen: staticMatch?.pathogen || 'Unknown pathogen',
+              urgency: (dbPest.severity === 'High' ? 'Critical' : dbPest.severity === 'Medium' ? 'Warning' : 'Low') as any,
+              zone: staticMatch?.zone || 'Zone A (Southwest)',
+              details: dbPest.symptoms || staticMatch?.details || 'Symptoms detected.',
+              status: 'active' as const,
+              agent: dbPest.organicTreatment || staticMatch?.agent || 'Standard bio-control',
+            };
+          });
+          setActiveAlerts(mapped);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Heatmap interactive vector simulation representing Zone Risk Levels
   const zonesList = [
     { id: 'A', name: 'Zone A (Southwest)', risk: 'Critical', score: 92, temp: '21°C', hum: '88%', color: 'bg-red-500' },

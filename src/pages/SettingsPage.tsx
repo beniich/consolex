@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Award, Sliders, Shield, CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useStore } from '../store/useStore';
 import SocCertificateModal from '../components/SocCertificateModal';
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
   const { addLog, nodes } = useStore();
   
   const [securityStandard, setSecurityStandard] = useState<'soc2' | 'pci' | 'iso'>('soc2');
@@ -25,10 +27,10 @@ export default function SettingsPage() {
         <div className="bg-dark-bg border border-[#334155] rounded-[4px] p-6 shadow-md md:col-span-2 space-y-6">
           <div>
             <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
-              SÉLECTION DU RÉGISTRE DE CONFORMITÉ
+              {t('settings.complianceRegisterSelection')}
             </h2>
             <p className="text-xs text-[#c5c6cd] mt-0.5">
-              Modifiez le type de audit d'intégrité imposé matériellement.
+              {t('settings.complianceRegisterDesc')}
             </p>
           </div>
 
@@ -84,10 +86,10 @@ export default function SettingsPage() {
             <div className="flex justify-between items-center">
               <div>
                 <h3 className="text-xs font-mono font-bold uppercase text-white">
-                  Seuil de latence critique
+                  {t('settings.criticalLatencyThreshold')}
                 </h3>
                 <p className="text-xs text-[#c5c6cd] mt-0.5">
-                  Déclenche l'alerte d'intrusion si la latence dépasse ce niveau.
+                  {t('settings.latencyThresholdDesc')}
                 </p>
               </div>
               <span className="text-sm font-mono font-bold text-[#38BDF8]">{alertThreshold} ms</span>
@@ -108,7 +110,7 @@ export default function SettingsPage() {
           {/* Token administration */}
           <div className="space-y-3 pt-4 border-t border-[#334155]/60">
             <label className="block text-xs font-mono font-bold uppercase text-white">
-              Clé de chiffrement administrative (FIPS 140-3)
+              {t('settings.adminCryptoKey')}
             </label>
             <input
               type="text"
@@ -117,7 +119,7 @@ export default function SettingsPage() {
               className="w-full bg-[#07111c] border border-[#334155] focus:border-[#38BDF8] rounded-sm text-xs py-2 px-3 outline-none text-slate-200 font-mono"
             />
             <p className="text-[10px] text-[#8f9097] font-mono">
-              Les modules d'infrastructure réencryptent automatiquement par HMAC avec cette clé à la volée.
+              {t('settings.adminCryptoKeyDesc')}
             </p>
           </div>
         </div>
@@ -126,10 +128,10 @@ export default function SettingsPage() {
         <div className="bg-dark-bg border border-[#334155] rounded-[4px] p-6 shadow-md space-y-6">
           <div>
             <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
-              CONTRÔLE DE SÉCURITÉ SOC 2
+              {t('settings.soc2Control')}
             </h2>
             <p className="text-xs text-[#c5c6cd] mt-0.5">
-              Règles obligatoires imposées à nos serveurs d'Arch-Compliance.
+              {t('settings.soc2ControlDesc')}
             </p>
           </div>
 
@@ -172,7 +174,7 @@ export default function SettingsPage() {
               onClick={() => setIsSocModalOpen(true)}
               className="w-full bg-[#4de082] hover:bg-white text-[#003919] hover:text-black font-bold font-mono text-xs py-2 rounded-sm uppercase tracking-wide cursor-pointer transition"
             >
-              Voir Certificat SOC 2
+              {t('settings.viewSoc2Cert')}
             </button>
           </div>
         </div>

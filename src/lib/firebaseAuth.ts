@@ -1,14 +1,24 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, User } from 'firebase/auth';
+import { initializeApp, getApps } from 'firebase/app';
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  User,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+  sendPasswordResetEmail,
+} from 'firebase/auth';
 import firebaseConfig from '../../firebase-applet-config.json';
 
-const app = initializeApp(firebaseConfig);
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 export const auth = getAuth(app);
 
-const provider = new GoogleAuthProvider();
-provider.addScope('https://www.googleapis.com/auth/spreadsheets');
+const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope('https://www.googleapis.com/auth/spreadsheets');
 
-// Internal tracker & cache
 let isSigningIn = false;
 let cachedAccessToken: string | null = null;
 
@@ -21,7 +31,6 @@ export const initAuth = (
       if (cachedAccessToken) {
         if (onAuthSuccess) onAuthSuccess(user, cachedAccessToken);
       } else if (!isSigningIn) {
-        // If logged in initially without recent interactive popup, we clear cached token to force re-sign-in on API request
         cachedAccessToken = null;
         if (onAuthFailure) onAuthFailure();
       }
@@ -35,12 +44,9 @@ export const initAuth = (
 export const googleSignIn = async (): Promise<{ user: User; accessToken: string } | null> => {
   try {
     isSigningIn = true;
-    const result = await signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, googleProvider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    if (!credential?.accessToken) {
-      throw new Error('Failed to get access token from Firebase Auth');
-    }
-
+    if (!credential?.accessToken) throw new Error('Failed to get access token');
     cachedAccessToken = credential.accessToken;
     return { user: result.user, accessToken: cachedAccessToken };
   } catch (error: any) {
@@ -51,11 +57,39 @@ export const googleSignIn = async (): Promise<{ user: User; accessToken: string 
   }
 };
 
-export const getAccessToken = async (): Promise<string | null> => {
-  return cachedAccessToken;
+/** Register with email/password + send verification email */
+export const registerWithEmail = async (
+  email: string,
+  password: string
+): Promise<User> => {
+  const result = await createUserWithEmailAndPassword(auth, email, password);
+  await sendEmailVerification(result.user);
+  return result.user;
 };
 
+/** Login with email/password */
+export const loginWithEmail = async (
+  email: string,
+  password: string
+): Promise<User> => {
+  const result = await signInWithEmailAndPassword(auth, email, password);
+  return result.user;
+};
+
+/** Resend email verification */
+export const resendVerification = async (): Promise<void> => {
+  const user = auth.currentUser;
+  if (user) await sendEmailVerification(user);
+};
+
+/** Reset password */
+export const resetPassword = async (email: string): Promise<void> => {
+  await sendPasswordResetEmail(auth, email);
+};
+
+export const getAccessToken = async (): Promise<string | null> => cachedAccessToken;
+
 export const logout = async () => {
-  await auth.signOut();
+  await signOut(auth);
   cachedAccessToken = null;
 };

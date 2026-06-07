@@ -1,113 +1,81 @@
-import 'dotenv/config';
-import express, { Request, Response } from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
 import cors from 'cors';
 
-import apiRouter from './routes/apiRouter';
-import streamRouter from './routes/streamRoutes';
-import { errorHandler } from './middlewares/errorHandler';
-import { startIotSimulator } from './utils/iotSimulator';
-import { execSync } from 'child_process';
-
-// ─── App setup ────────────────────────────────────────────────────────────────
 const app = express();
-const PORT = process.env.PORT ?? '4000';
+const PORT = process.env.PORT || 4000;
+
+// ─── Security Headers (CSP, HSTS, etc.) ──────────────────────────────────────
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.ipify.org https://api.open-meteo.com;"
+  );
+  if (process.env.NODE_ENV === 'production') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  }
+  next();
+});
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
-const allowedOrigins = (process.env.CORS_ORIGIN ?? 'http://localhost:3000,http://localhost:3001')
-  .split(',')
-  .map((o) => o.trim());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-app.use(
-  cors({
-    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: origin "${origin}" is not allowed`));
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
+// ─── Body Parsers ─────────────────────────────────────────────────────────────
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 
-// ─── Body parsers ─────────────────────────────────────────────────────────────
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
-
-// ─── Health check (unauthenticated) ──────────────────────────────────────────
-app.get('/health', (_req: Request, res: Response) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-// ─── SSE stream (unauthenticated — real-time IoT data) ───────────────────────
-app.use('/api/stream', streamRouter);
-
-// ─── API routes ───────────────────────────────────────────────────────────────
-app.use('/api', apiRouter);
-
-// ─── 404 for unknown routes ───────────────────────────────────────────────────
-app.use((_req: Request, res: Response) => {
-  res.status(404).json({ error: 'Route not found', status: 404 });
-});
-
-// ─── Global error handler (must be LAST) ─────────────────────────────────────
-app.use(errorHandler);
-
-// ─── Start server ─────────────────────────────────────────────────────────────
-async function bootstrap() {
-  try {
-    // eslint-disable-next-line no-console
-    console.log("🚀 Démarrage d'AgroMaître Backend...");
-
-    // eslint-disable-next-line no-console
-    console.log("📦 Synchronisation des connaissances agricoles...");
-    execSync('npx prisma db seed', { stdio: 'inherit' });
-
-    app.listen(Number(PORT), () => {
-      // eslint-disable-next-line no-console
-      console.log(`📡 Serveur actif sur le port ${PORT}`);
-      // eslint-disable-next-line no-console
-      console.log('✅ Système expert agricole opérationnel');
-      if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line no-console
-        console.log(`   Health: http://localhost:${PORT}/health`);
-        // eslint-disable-next-line no-console
-        console.log(`   API:    http://localhost:${PORT}/api`);
-        // eslint-disable-next-line no-console
-        console.log(`   Stream: http://localhost:${PORT}/api/stream`);
-      }
-
-      // Start the IoT simulator (always runs as fallback / supplemental data source)
-      startIotSimulator();
-
-      // Start MQTT client only when a broker URL is provided
-      if (process.env.MQTT_BROKER_URL) {
-        // Dynamic import keeps mqtt fully optional — if the package were absent
-        // the server still boots normally with the simulator.
-        import('./utils/mqttClient')
-          .then(({ connectMQTT }) => {
-            connectMQTT();
-            // eslint-disable-next-line no-console
-            console.log('📡 MQTT client initialised — listening on agromaitre/#');
-          })
-          .catch((err: unknown) => {
-            // eslint-disable-next-line no-console
-            console.error('⚠️  MQTT client failed to load:', (err as Error).message);
-          });
-      } else {
-        // eslint-disable-next-line no-console
-        console.log('ℹ️  No MQTT_BROKER_URL set — using IoT simulator only');
-      }
-    });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('💥 Erreur fatale au démarrage:', error);
-    process.exit(1);
+// ─── Audit Request Logger (ISO 27001 A.12.4 - Logging) ───────────────────────
+app.use((req, _res, next) => {
+  const log = {
+    ts: new Date().toISOString(),
+    method: req.method,
+    path: req.path,
+    ip: req.ip,
+    ua: req.headers['user-agent'],
+  };
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(JSON.stringify(log));
   }
+  next();
+});
+
+// ─── Health Check ─────────────────────────────────────────────────────────────
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString(), version: '1.0.0' });
+});
+
+// ─── API Routes ───────────────────────────────────────────────────────────────
+try {
+  const apiRouter = require('./routes/apiRouter').default;
+  app.use('/api', apiRouter);
+} catch (err) {
+  console.warn('API router not fully loaded:', err);
 }
 
-bootstrap();
+// ─── Global Error Handler ─────────────────────────────────────────────────────
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const status = err.status || err.statusCode || 500;
+  const message = process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message;
+  console.error(`[ERROR] ${req.method} ${req.path}:`, err.message);
+  res.status(status).json({ error: message, status });
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 AgroMaître API running on port ${PORT}`);
+  console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`   CORS Origin: ${process.env.CORS_ORIGIN || 'http://localhost:3000'}`);
+});
 
 export default app;

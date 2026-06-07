@@ -104,8 +104,43 @@ export default function AgroBotanicalModule({ onAddLog }: AgroBotanicalModulePro
     }
   ];
 
+  const [crops, setCrops] = React.useState<CropSpecies[]>(cropData);
   const [selectedCropId, setSelectedCropId] = useState<string>('lavender');
-  const activeCrop = cropData.find(c => c.id === selectedCropId) || cropData[0];
+
+  React.useEffect(() => {
+    fetch('/api/crops')
+      .then(r => r.json())
+      .then((data: any[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped = data.map(dbCrop => {
+            const staticMatch = cropData.find(c => c.name.toLowerCase() === dbCrop.name.toLowerCase());
+            return {
+              id: dbCrop.id || dbCrop.name.toLowerCase(),
+              name: dbCrop.name,
+              icon: staticMatch?.icon || '🌱',
+              ph: (dbCrop.idealPhMin + dbCrop.idealPhMax) / 2,
+              phStatus: 'Optimal',
+              light: staticMatch?.light || 1200,
+              lightStatus: staticMatch?.lightStatus || 'Standard Flow',
+              nutrients: staticMatch?.nutrients || 80,
+              nutrientStatus: staticMatch?.nutrientStatus || 'Balanced',
+              readyDays: staticMatch?.readyDays || 15,
+              readinessPct: staticMatch?.readinessPct || 85,
+              harvestDate: staticMatch?.harvestDate || 'Oct 20',
+              requiresMonitoring: staticMatch?.requiresMonitoring || false,
+              notes: dbCrop.description || staticMatch?.notes || 'No notes available.',
+            };
+          });
+          setCrops(mapped);
+          if (!mapped.find(c => c.id === selectedCropId)) {
+            setSelectedCropId(mapped[0].id);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const activeCrop = crops.find(c => c.id === selectedCropId) || crops[0];
 
   const handleCropSelect = (crop: CropSpecies) => {
     setSelectedCropId(crop.id);
@@ -166,7 +201,7 @@ export default function AgroBotanicalModule({ onAddLog }: AgroBotanicalModulePro
           </h3>
 
           <div className="space-y-3">
-            {cropData.map((crop) => {
+            {crops.map((crop) => {
               const isSelected = crop.id === selectedCropId;
               return (
                 <button

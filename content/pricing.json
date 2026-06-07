@@ -1,0 +1,56 @@
+[
+  {
+    "id": "free",
+    "name": "Starter",
+    "monthlyPrice": 0,
+    "annualPrice": 0,
+    "description": "Perfect for small farms getting started with precision agriculture.",
+    "features": [
+      "Up to 2 sensor zones",
+      "Basic dashboard & analytics",
+      "7-day data history",
+      "1 user account",
+      "Email support"
+    ],
+    "color": "#64748b",
+    "icon": "leaf"
+  },
+  {
+    "id": "pro",
+    "name": "Pro",
+    "monthlyPrice": 49,
+    "annualPrice": 470,
+    "description": "For growing operations that need advanced monitoring and AI insights.",
+    "features": [
+      "Up to 20 sensor zones",
+      "Advanced AI predictions",
+      "1-year data history",
+      "Up to 5 team members",
+      "IoT real-time monitoring",
+      "Automated weekly reports",
+      "Priority support"
+    ],
+    "popular": true,
+    "color": "#c25a3d",
+    "icon": "zap"
+  },
+  {
+    "id": "elite",
+    "name": "Enterprise",
+    "monthlyPrice": 149,
+    "annualPrice": 1430,
+    "description": "Enterprise-grade platform for large agricultural operations.",
+    "features": [
+      "Unlimited sensor zones",
+      "Full AI & Vision suite",
+      "Unlimited data history",
+      "Unlimited team members",
+      "Custom integrations & API",
+      "ISO 27001 compliance reports",
+      "Dedicated account manager",
+      "SLA 99.9% uptime guarantee"
+    ],
+    "color": "#7c3aed",
+    "icon": "crown"
+  }
+]

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -12,114 +12,158 @@
   --color-dark-base: #051424;
 }
 
-/* ─── Dark / Light mode scoped variables ─────────────────────────────────────── */
-.dark {
-  --color-dark-base: #051424;
-  --color-dark-bg: #122131;
-  --color-surface: #0d1c2d;
-  --color-text-primary: #d4e4fa;
-  --color-text-muted: #8f9097;
-  --color-border: rgba(51, 65, 85, 0.6);
+/* ─── CSS Custom Properties for theme system ─── */
+:root {
+  --bg-base: #051424;
+  --bg-surface: #0d1c2d;
+  --bg-card: #122131;
+  --bg-header: #0f172a;
+  --text-primary: #d4e4fa;
+  --text-muted: #8f9097;
+  --text-heading: #ffffff;
+  --border-color: rgba(51, 65, 85, 0.6);
+  --border-header: rgba(255,255,255,0.1);
+  --accent: #c25a3d;
+  --accent-light: #e2725b;
+  --scrollbar-track: #010f1f;
+  --scrollbar-thumb: #1c2b3c;
+  --scrollbar-hover: #2a3d54;
+}
+
+/* ─── DARK mode (default) ─── */
+.dark, html:not(.light) {
+  --bg-base: #051424;
+  --bg-surface: #0d1c2d;
+  --bg-card: #122131;
+  --bg-header: #0f172a;
+  --text-primary: #d4e4fa;
+  --text-muted: #8f9097;
+  --text-heading: #ffffff;
+  --border-color: rgba(51, 65, 85, 0.6);
+  --border-header: rgba(255,255,255,0.1);
+  --scrollbar-track: #010f1f;
+  --scrollbar-thumb: #1c2b3c;
+  --scrollbar-hover: #2a3d54;
   color-scheme: dark;
 }
 
+/* ─── LIGHT mode — Premium Cream & Terracotta ─── */
 .light {
-  --color-dark-base: #f5f0eb;
-  --color-dark-bg: #fdfbf9;
-  --color-surface: #ffffff;
-  --color-text-primary: #1a2535;
-  --color-text-muted: #4a5568;
-  --color-border: rgba(203, 213, 224, 0.8);
+  --bg-base: #fdfbf9;
+  --bg-surface: #ffffff;
+  --bg-card: #f5f0eb;
+  --bg-header: #ffffff;
+  --text-primary: #1a2535;
+  --text-muted: #64748b;
+  --text-heading: #0f172a;
+  --border-color: rgba(203, 213, 224, 0.8);
+  --border-header: rgba(0,0,0,0.08);
+  --scrollbar-track: #f1ede9;
+  --scrollbar-thumb: #d4b8a8;
+  --scrollbar-hover: #b89080;
   color-scheme: light;
 }
 
-/* Light mode body overrides */
-.light body,
-body:is(.light *) {
-  background-color: var(--color-dark-base);
-  color: var(--color-text-primary);
+/* ─── Apply CSS variables to elements ─── */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ─── Glow utilities ─────────────────────────────────────────────────────────── */
+/* Header light mode fix */
+.light header {
+  background-color: var(--bg-header) !important;
+  border-bottom-color: var(--border-header) !important;
+}
+.light header span, .light header button { color: #374151; }
+.light header .text-slate-200 { color: #0f172a; }
+.light header .text-slate-400 { color: #6b7280; }
+
+/* Sidebar light mode fix */
+.light nav, .light aside {
+  background-color: var(--bg-header) !important;
+  border-color: var(--border-header) !important;
+}
+.light nav a, .light aside a { color: #374151; }
+.light nav a:hover, .light aside a:hover {
+  background-color: rgba(194, 90, 61, 0.08) !important;
+  color: #c25a3d;
+}
+
+/* Cards light mode */
+.light .bg-\[\#051424\] {
+  background-color: var(--bg-base) !important;
+}
+.light .bg-\[\#0d1c2d\], .light .bg-\[\#122131\], .light .bg-\[\#1e293b\], .light .bg-\[\#0c1825\]\/80, .light .bg-\[\#0b131c\], .light .bg-slate-900\/50, .light .bg-\[\#080d14\] {
+  background-color: var(--bg-surface) !important;
+}
+.light .text-\[\#d4e4fa\] {
+  color: var(--text-primary) !important;
+}
+.light .text-\[\#8f9097\] {
+  color: var(--text-muted) !important;
+}
+.light .text-\[\#4de082\] {
+  color: #16a34a !important;
+}
+.light .border-white\/10, .light .border-slate-800, .light .border-slate-700\/60, .light .border-slate-200, .light .border-slate-800\/80, .light .border-\[\#334155\] {
+  border-color: var(--border-color) !important;
+}
+.light .text-slate-300 { color: #374151 !important; }
+.light .text-slate-400 { color: #6b7280 !important; }
+.light .text-slate-500 { color: #9ca3af !important; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+
+/* ─── Glow utilities ─── */
 @utility glow-green {
   box-shadow: 0 0 15px rgba(77, 224, 130, 0.2);
   border: 1px solid rgba(77, 224, 130, 0.4);
 }
-
 @utility glow-red {
   box-shadow: 0 0 15px rgba(255, 179, 176, 0.23);
   border: 1px solid rgba(255, 179, 176, 0.45);
 }
-
 @utility glow-blue {
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
   border: 1px solid rgba(56, 189, 248, 0.4);
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: #051424;
-  color: #d4e4fa;
-  min-height: 100vh;
-}
-
-/* Custom Scrollbar for terminal vibe */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #010f1f;
-}
-::-webkit-scrollbar-thumb {
-  background: #1c2b3c;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #2a3d54;
-}
-
-/* ─── Animations ─────────────────────────────────────────────────────────────── */
+/* ─── Animations ─── */
 @keyframes pulse-slow {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
+.animate-pulse-slow { animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 
-.animate-pulse-slow {
-  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Skeleton shimmer animation */
 @keyframes shimmer {
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+@utility animate-shimmer { animation: shimmer 1.6s infinite; }
 
-/* Tailwind v4 custom animation reference */
-@utility animate-shimmer {
-  animation: shimmer 1.6s infinite;
-}
-
-/* animate-in fade-in utility (used by DashboardSkeleton) */
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-
-.animate-in {
-  animation-fill-mode: both;
-}
-
-.fade-in {
-  animation-name: fade-in;
-}
-
-.duration-300 {
-  animation-duration: 300ms;
-}
+.animate-in { animation-fill-mode: both; }
+.fade-in { animation-name: fade-in; }
+.duration-300 { animation-duration: 300ms; }
 
 /* Grid lines overlay utility */
 .grid-overlay {
-  background-image: linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(90deg, #1e293b 1px, transparent 1px);
+  background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
   background-size: 24px 24px;
 }
+
+/* ─── Light mode specific overrides for key components ─── */
+.light .bg-dark-bg { background-color: var(--bg-card) !important; }
+.light .bg-surface { background-color: var(--bg-surface) !important; }
+.light .text-primary { color: var(--text-primary) !important; }
