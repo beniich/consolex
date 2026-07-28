@@ -61,14 +61,6 @@ git clone https://github.com/beniich/herboferme.git
 cd remix_-consolherb
 ```
 
-### 2. Environment Setup
-Create a `.env` file in the `server/` directory:
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/agromaitre"
-OPENAI_API_KEY="your_key_here"
-MQTT_BROKER_URL="mqtt://localhost:1883"
-JWT_SECRET="your_super_secret_key"
-```
 
 ### 3. Local Development (Docker)
 The fastest way to launch the entire ecosystem:
